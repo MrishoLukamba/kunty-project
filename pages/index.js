@@ -1,8 +1,73 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import {useState, useRef} from 'react'
 import styles from '../styles/Home.module.css'
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword  } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+//import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDCXlaeLS6qhg9JVk_VsDi_b89tFWTs-Sk",
+  authDomain: "student-arrival.firebaseapp.com",
+  projectId: "student-arrival",
+  storageBucket: "student-arrival.appspot.com",
+  messagingSenderId: "462546293872",
+  appId: "1:462546293872:web:c108133388fffafaf950b5",
+  measurementId: "G-P45DJJNDBY"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+//const analytics = getAnalytics(app);
+const auth = getAuth();
 
 export default function Home() {
+  const [emailR, setEmail] = useState('')
+  const [passR, setPass] = useState('')
+
+  const emailRef = useRef(null)
+  const passwordRef = useRef(null)
+  
+
+  const signin = event=>{
+    event.preventDefault();
+    createUserWithEmailAndPassword("lukaquantum25@gmail.com", 12345)
+        .then(user =>{
+          console.log(user)
+        }).catch(err =>{
+          console.log(err)
+        })
+  }
+
+  const login =event=>{
+    event.preventDefault()
+
+    signInWithEmailAndPassword(emailR, passR)
+      .then(user => {
+        // Signed in 
+        console.log(user)
+
+        // ...
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
+  const handleEmail=(event)=>{
+    event.preventDefault()
+    event.target.name==='email'?setEmail(event.target.value):emailR;
+  }
+
+  const handlePassword=(event)=>{
+      event.preventDefault()
+      event.target.name==='password'? setPass(event.target.value):passR;
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -12,57 +77,21 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+      <form>
+          <label>Email</label>
+          <input name='email' value={emailR} onChange={handleEmail}></input>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+          <label>Password</label>
+          <input name='password' value={passR} onChange={handlePassword} ></input>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+          <button onClick={login}>signin</button>
+        </form>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
+        
       </footer>
     </div>
   )
