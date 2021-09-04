@@ -12,22 +12,28 @@ const db = admin.firestore()
 
 
 exports.postStudent = functions.https.onRequest(async(req, res)=>{
-    const Data = req.query.data;
+    const name = req.query.name;
+    const age = req.query.age;
+    const id = req.query.id;
+    const parentName=req.query.parentName;
+    const address = req.query.address;
+    const email = req.query.email;
+    const date = req.query.date;
+    const status = req.query.status
 
     const data = {
-        name:Data.name,
-        id:Data.id,
-
+        name:name,
+        id:id,
+        age:age,
         parent:{
-            name:Data.parent.name,
-            address:Data.parent.address,
-            email:Data.parent.email
+            name:parentName,
+            address:address,
+            email:email
         },
-
         arrival:[
-            {date: Data.arrival.date, status:Data.arrival.status}
-            
+            {date:date, status:status}
         ]
+        
     }
 
 
@@ -45,9 +51,11 @@ exports.postStudent = functions.https.onRequest(async(req, res)=>{
 //updating student arrival
 
 exports.updatingArrival = functions.https.onRequest(async(req, res)=>{
-    const arrived = true;
+    const date= req.query.date;
+    const status = req.query.status
+
     const studentId = '001'
-    const arrival = {date:'02/01/2021',status:false}
+    const arrival = {date:date,status:status}
 
     await db.collection('class1').doc(studentId).update({arrival:admin.firestore.FieldValue.arrayUnion(arrival)})
 
@@ -56,7 +64,8 @@ exports.updatingArrival = functions.https.onRequest(async(req, res)=>{
 
 //event trigger and sending email
 const SENDGRID_API_KEY = functions.config().sendgrid.key
-const sgMail = require("@sendgrid/mail")
+const sgMail = require("@sendgrid/mail");
+const { response } = require("express");
 sgMail.setApiKey('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')
 
 exports.sendEmail = functions.firestore.document('class1/{id}')
@@ -85,17 +94,21 @@ exports.sendEmail = functions.firestore.document('class1/{id}')
 //getting student data
 
 exports.getStudent = functions.https.onRequest(async(req, res)=>{
-    const studentId = req.query.id;
-    //const classId = req.params.class;
 
-    await db.collection('class1').get().then((snapshot)=>{
-        res.send(snapshot.doc(studentId))
-    }).catch(err=>{
-        console.log(err)
+    db.collection('class1').get().then((snap)=>{
+        const documents = snap.docs.map(doc=> doc.data())
+        res.send(documents)
     })
-    
-   
+
 })
+    
+    //const classId = req.params.class;
+   
+        
+    
+    
+    
+
 
 // sendgridAPI-key= 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        
 
