@@ -1,8 +1,12 @@
 const functions = require("firebase-functions");
-
+const cors = require('cors');
 const admin = require('firebase-admin');
 const { firestore } = require("firebase-admin");
 const { firebaseConfig } = require("firebase-functions");
+
+const express = require('express');
+const app = express();
+app.use(cors({ origin: true }));
 
 admin.initializeApp();
 
@@ -13,7 +17,7 @@ const db = admin.firestore()
 
 exports.postStudent = functions.https.onRequest(async(req, res)=>{
     const name = req.query.name;
-    const age = req.query.age;
+    //const age = req.query.age;
     const id = req.query.id;
     const parentName=req.query.parentName;
     const address = req.query.address;
@@ -24,7 +28,6 @@ exports.postStudent = functions.https.onRequest(async(req, res)=>{
     const data = {
         name:name,
         id:id,
-        age:age,
         parent:{
             name:parentName,
             address:address,
@@ -53,8 +56,9 @@ exports.postStudent = functions.https.onRequest(async(req, res)=>{
 exports.updatingArrival = functions.https.onRequest(async(req, res)=>{
     const date= req.query.date;
     const status = req.query.status
+    const id = req.query.id;
 
-    const studentId = '001'
+    const studentId = id
     const arrival = {date:date,status:status}
 
     await db.collection('class1').doc(studentId).update({arrival:admin.firestore.FieldValue.arrayUnion(arrival)})
@@ -93,20 +97,31 @@ exports.sendEmail = functions.firestore.document('class1/{id}')
 
 //getting student data
 
-exports.getStudent = functions.https.onRequest(async(req, res)=>{
-
-    db.collection('class1').get().then((snap)=>{
+exports.getStudents = functions.https.onRequest(async(req, res)=>{
+    
+    await db.collection('class1').get().then((snap)=>{
         const documents = snap.docs.map(doc=> doc.data())
         res.send(documents)
     })
 
 })
     
-    //const classId = req.params.class;
+
+app.get('/:id',async(req,res)=>{
+
+   const id = req.params.id
+   console.log(id)
+    await db.collection('class1').doc(id).get().then((snap) => {
+        const result = snap.data()
+        res.send(result)
+    })
+        
+})     
+  
    
         
     
-    
+exports.app = functions.https.onRequest(app);    
     
 
 
