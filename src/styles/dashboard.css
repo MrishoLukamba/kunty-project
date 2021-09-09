@@ -6,6 +6,130 @@
     flex-direction: row;
     
 }
+.admin-left >button{
+    padding: 10px 10px;
+    background-color: black;
+    color: #fff;
+    border:none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline-width: 0;
+}
+
+.search{
+   width: 200px;
+   height: 30px;
+   border-radius: 0;
+   outline-width: 0;
+   border: none;
+}
+
+.search-button{
+    width:60px;
+    height: 45px;
+    background-color:black;
+    color:white;
+    border:none;
+    outline-width: 0
+
+}
+
+.display-student{
+    width: 70%;
+    margin-top:0px;
+    margin-left: 50px;
+    height: 500px;
+    background-color: rgb(72, 71, 85);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 5px;
+
+}
+
+
+.student-details{
+    flex: 0.5;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    background-color: whitesmoke;
+    height: 450px;
+    margin-left: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    
+}
+.student-details::-webkit-scrollbar{
+    width: 5px;
+    background-color: rgb(72, 71, 85);
+}
+.student-details::-webkit-scrollbar-thumb{
+    width: 5px;
+    background-color:black;
+    border-radius: 5px
+}
+.student-details,.parent-details >h2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+.s-details >h4{
+    color:whitesmoke;
+    font-weight:400;
+    display: flex;
+    justify-content: center;
+}
+.attend{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    padding: 5px 5px;
+    border-radius: 4px;
+    background-color:rgba(47, 43, 92, 0.658)
+    
+}
+
+.s-details{
+    width: 100%;
+    height: 90%;
+    background-color: rgb(43, 42, 65);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    color: rgba(245, 245, 245, 0.801);
+    box-sizing: border-box;
+    
+}
+.parent-details{
+    flex: 0.5;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: whitesmoke;
+    height: 90%;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.p-details{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    color: rgba(245, 245, 245, 0.801);
+    box-sizing: border-box;
+    background-color: rgb(43, 42, 65);
+}
+
 .admin-left{
     display: flex;
     flex-direction: column;
@@ -28,6 +152,7 @@
     padding: 10px 10px;
     border: none;
     color: #fff;
+    font-weight: 500;
     background-color:black;
     cursor:pointer;
     margin-bottom: 20px;

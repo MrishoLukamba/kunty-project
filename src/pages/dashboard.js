@@ -1,10 +1,9 @@
-import React,{useState, useEffect,useRef} from 'react'
+import React,{useState,useEffect,useRef} from 'react'
 import axios from 'axios'
 import {useHistory} from 'react-router-dom';
 import '../styles/dashboard.css'
 import Student from '../component/student';
-
-
+import {app} from './home'
 
 
 
@@ -24,20 +23,19 @@ function Dashboard() {
     const [students, setStudents] = useState()
 
     const router = useHistory()
+
+   // const logout=(event)=>{
+    //    event.preventDefault();
+      //  app.auth().signOut().then(()=>{
+        //    console.log('user is logged out')
+        //}).catch(err =>{
+        //    console.log(err)
+        //})
+    //}
    
 
-    
-
-    const updateStudent=(arrival)=>{
-      axios.put(`http://localhost:5001/student-arrival/us-central1/updatingArrival?date=${arrival.date}&status=${arrival.status}`).then(()=>{
-        console.log('updated')
-      }).catch(err =>{
-        console.log(err)
-      })
-    }
-
     const getStudents=()=>{
-      axios.get('http://localhost:5001/student-arrival/us-central1/getStudent').then((resp)=>{
+      axios.get('http://localhost:5001/student-arrival/us-central1/getStudents').then((resp)=>{
         setStudents(resp.data)
         
       }).catch(err =>{
@@ -53,16 +51,16 @@ function Dashboard() {
     return (
         <div className="dashboard">
             <div className='admin-left'>
-                <button className="button" onClick={()=>router.push('/')}>log out</button>
-                <button onClick={()=> router.push('/addStudent')} className="button" onClick={display}>Add Student</button>
-                <button  className="button">Announcment</button>
-                <button className="button">student details</button>
+                <button className="button" onClick={()=> app.auth().signOut()}>log out</button>
+                <button onClick={()=> router.push('/addstudent')} className="button" >Add Student</button>
+                <button onClick={()=> router.push('/announcement')} className="button">Announcment</button>
+                <button onClick={()=> router.push('/student')} className="button">student details</button>
             </div>
 
             <div className="admin-right">
                 
                    { students?.map(({id,name})=>(
-                        <Student key={id} id={id} name={name}/>
+                        <Student key={id} id={id} name={name} />
 
                     ))}
                 
